@@ -1,4 +1,4 @@
-#🌱 Smart Irrigation System (AVR Based)
+# 🌱 Smart Irrigation System (AVR Based)
 
 An automated irrigation system that monitors soil moisture in real time and controls water supply accordingly. This project uses a microcontroller-based approach to reduce water wastage and improve plant growth by ensuring optimal soil conditions.
 ---
