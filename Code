@@ -1,0 +1,42 @@
+const int sensorPin = A0;
+const int relayPin = 6;
+
+int moisture;
+
+// tumhare sensor ke hisaab se
+int dryThreshold = 750;   // dry (air ~1023)
+int wetThreshold = 600;   // wet (~500)
+
+bool pumpState = false;
+unsigned long lastSwitchTime = 0;
+unsigned long minRunTime = 5000; // 5 sec minimum ON time
+
+void setup() {
+  pinMode(relayPin, OUTPUT);
+  digitalWrite(relayPin, HIGH); // relay OFF (active LOW)
+
+  Serial.begin(9600);
+}
+
+void loop() {
+  moisture = analogRead(sensorPin);
+  Serial.println(moisture);
+
+  unsigned long currentTime = millis();
+
+  // DRY → pump ON
+  if (moisture > dryThreshold && pumpState == false) {
+    digitalWrite(relayPin, LOW);
+    pumpState = true;
+    lastSwitchTime = currentTime;
+  }
+
+  // WET → pump OFF (but after minimum time)
+  else if (moisture < wetThreshold && pumpState == true &&
+           (currentTime - lastSwitchTime > minRunTime)) {
+    digitalWrite(relayPin, HIGH);
+    pumpState = false;
+  }
+
+  delay(500);
+}
